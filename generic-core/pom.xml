@@ -14,6 +14,35 @@
     <packaging>jar</packaging>
 
     <dependencies>
+        <!-- Generic core foundation: entities/repos, dto/mapper, exception, utils, validation, rest, web -->
+        <dependency>
+            <groupId>dev.barrikeit</groupId>
+            <artifactId>rest</artifactId>
+            <version>${core.version}</version>
+        </dependency>
+        <!-- Security primitives (JwtUtil, filters/interceptors, UserSession(Service), SecurityProperties,
+             abstract Security/WebSocketSecurityConfiguration, auth auto-config). Shared by rest and ws. -->
+        <dependency>
+            <groupId>dev.barrikeit</groupId>
+            <artifactId>security</artifactId>
+            <version>${core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>dev.barrikeit</groupId>
+            <artifactId>database-spring-api</artifactId>
+            <version>${core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>dev.barrikeit</groupId>
+            <artifactId>mapper</artifactId>
+            <version>${core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>dev.barrikeit</groupId>
+            <artifactId>validation</artifactId>
+            <version>${core.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>

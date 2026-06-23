@@ -1,7 +1,7 @@
 package dev.barrikeit.config;
 
-import dev.barrikeit.security.config.interceptor.AppHeaderValidatorInterceptor;
-import dev.barrikeit.security.config.interceptor.JwtChannelInterceptor;
+import dev.barrikeit.security.interceptor.AppHeaderValidatorInterceptor;
+import dev.barrikeit.security.interceptor.JwtChannelInterceptor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;

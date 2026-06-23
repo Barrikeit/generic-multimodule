@@ -1,9 +1,9 @@
 package dev.barrikeit.security.config;
 
 import dev.barrikeit.config.ApplicationProperties;
-import dev.barrikeit.security.config.filter.AppHeaderValidatorFilter;
-import dev.barrikeit.security.config.filter.JwtFilter;
-import dev.barrikeit.security.config.filter.RateLimitingFilter;
+import dev.barrikeit.security.filter.AppHeaderValidatorFilter;
+import dev.barrikeit.security.filter.JwtFilter;
+import dev.barrikeit.security.filter.RateLimitingFilter;
 import dev.barrikeit.security.service.UserSessionService;
 import dev.barrikeit.security.util.JwtUtil;
 import java.util.Arrays;
@@ -120,7 +120,17 @@ public class SecurityConfiguration {
 
   @Bean
   public RateLimitingFilter rateLimitingFilter() {
-    return new RateLimitingFilter(securityProperties.getRateLimit());
+    SecurityProperties.RateLimitProperties rl = securityProperties.getRateLimit();
+    if (rl == null) {
+      return new RateLimitingFilter(
+          false, 5, 5, 1, List.of("/auth/login", "/auth/register", "/auth/refresh"));
+    }
+    return new RateLimitingFilter(
+        rl.isEnabled(),
+        rl.getCapacity(),
+        rl.getRefillTokens(),
+        rl.getRefillPeriodMinutes(),
+        List.of("/auth/login", "/auth/register", "/auth/refresh"));
   }
 
   @Bean
@@ -131,7 +141,7 @@ public class SecurityConfiguration {
   @Bean
   public AppHeaderValidatorFilter appHeaderValidatorFilter() {
     return new AppHeaderValidatorFilter(
-        serverProperties.getServlet(), securityProperties.getAppValidatorFilter());
+        serverProperties.getServlet().getApiPath(), securityProperties.getAppValidatorFilter());
   }
 
   private static List<String> splitTrimmed(String csv) {

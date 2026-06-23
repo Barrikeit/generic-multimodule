@@ -11,8 +11,8 @@ import dev.barrikeit.util.RandomUtil;
 import dev.barrikeit.util.TimeUtil;
 import dev.barrikeit.util.constants.ExceptionConstants;
 import dev.barrikeit.util.enums.EmailType;
-import dev.barrikeit.util.exceptions.BadRequestException;
-import dev.barrikeit.util.exceptions.NotFoundException;
+import dev.barrikeit.exception.BadRequestException;
+import dev.barrikeit.exception.NotFoundException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -66,7 +66,7 @@ public class UserCrudService extends GenericCrudService<User, UUID, UserDto> {
     user.setPassword(passwordEncoder.encode(dto.getPassword()));
     mapper.updateEntity(dto, user);
     user.getSecurity().setRegistrationDate(TimeUtil.offsetDateTimeNow());
-    user.getSecurity().setVerificationToken(RandomUtil.getRandomBase64EncodedString(14));
+    user.getSecurity().setVerificationToken(RandomUtil.randomBase64(14));
 
     user = repository.save(user);
     UserDto registeredUserDto = mapper.toDto(user);
