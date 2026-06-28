@@ -27,8 +27,8 @@ spring:
       # application-flyway.yaml is intentionally NOT imported here.
       # Schema migrations are managed exclusively by generic-rest.
       - application-security.yaml
+      - optional:application-mail.yaml
       - optional:application-${spring.profiles.active}.yaml
-  # Belt-and-suspenders: disable Flyway even if it somehow ends up on the classpath
   flyway:
     enabled: false
 

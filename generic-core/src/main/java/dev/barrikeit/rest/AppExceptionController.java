@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @RestControllerAdvice
-public class AppExceptionController {
+public class AppExceptionController extends ExceptionController {
 
   @ExceptionHandler(ErrorResponseException.class)
   public ProblemDetail handleErrorResponse(ErrorResponseException ex, HttpServletRequest req) {

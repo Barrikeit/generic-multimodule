@@ -1,14 +1,14 @@
 package dev.barrikeit.rest;
 
 import java.security.Principal;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
 
-@Log4j2
+@Slf4j
 @Controller
 public class EchoController {
 

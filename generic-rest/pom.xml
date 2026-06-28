@@ -18,6 +18,12 @@
             <groupId>dev.barrikeit</groupId>
             <artifactId>generic-core</artifactId>
         </dependency>
+        <!-- REST layer: Response, ExceptionController + generic base controllers -->
+        <dependency>
+            <groupId>dev.barrikeit</groupId>
+            <artifactId>rest</artifactId>
+            <version>${core.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>

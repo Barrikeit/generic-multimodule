@@ -13,7 +13,7 @@ import dev.barrikeit.util.constants.ExceptionConstants;
 import dev.barrikeit.util.enums.EmailType;
 import dev.barrikeit.exception.BadRequestException;
 import dev.barrikeit.exception.NotFoundException;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -21,11 +21,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@Log4j2
+@Slf4j
 @Service
 public class UserCrudService extends GenericCrudService<User, UUID, UserDto> {
   private final UserRepository repository;
@@ -35,10 +36,14 @@ public class UserCrudService extends GenericCrudService<User, UUID, UserDto> {
   private final PasswordEncoder passwordEncoder =
       PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
-  private final EmailService emailService;
+  // Optional: EmailService only exists when mail is configured (@ConditionalOnProperty mail.host).
+  private final Optional<EmailService> emailService;
 
   public UserCrudService(
-      UserRepository repository, UserMapper mapper, RoleRepository roleRepository, EmailService emailService) {
+      UserRepository repository,
+      UserMapper mapper,
+      RoleRepository roleRepository,
+      Optional<EmailService> emailService) {
     super(repository, mapper);
     this.repository = repository;
     this.mapper = mapper;
@@ -70,7 +75,7 @@ public class UserCrudService extends GenericCrudService<User, UUID, UserDto> {
 
     user = repository.save(user);
     UserDto registeredUserDto = mapper.toDto(user);
-    emailService.sendEmail(registeredUserDto, EmailType.REGISTER_USER);
+    emailService.ifPresent(es -> es.sendEmail(registeredUserDto, EmailType.REGISTER_USER));
     return registeredUserDto;
   }
 
@@ -84,7 +89,7 @@ public class UserCrudService extends GenericCrudService<User, UUID, UserDto> {
 
     repository.save(user);
     UserDto modifiedUserDto = mapper.toDto(user);
-    emailService.sendEmail(modifiedUserDto, EmailType.UPDATED_USER);
+    emailService.ifPresent(es -> es.sendEmail(modifiedUserDto, EmailType.UPDATED_USER));
     return modifiedUserDto;
   }
 
@@ -98,9 +103,11 @@ public class UserCrudService extends GenericCrudService<User, UUID, UserDto> {
 
     repository.save(user);
     UserDto modifiedUserDto = mapper.toDto(user);
-    emailService.sendEmail(
-        modifiedUserDto,
-        !dto.getSecurity().isEnabled() ? EmailType.ENABLED_USER : EmailType.DISABLED_USER);
+    emailService.ifPresent(
+        es ->
+            es.sendEmail(
+                modifiedUserDto,
+                !dto.getSecurity().isEnabled() ? EmailType.ENABLED_USER : EmailType.DISABLED_USER));
     return modifiedUserDto;
   }
 
