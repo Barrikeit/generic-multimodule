@@ -1,7 +1,6 @@
 package dev.barrikeit.rest;
 
 import dev.barrikeit.config.ApplicationProperties;
-import dev.barrikeit.rest.Response;
 import dev.barrikeit.service.dto.VersionDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

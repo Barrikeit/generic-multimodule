@@ -3,7 +3,7 @@ security:
   max-concurrent-sessions: 5
   cors:
     allowed:
-      origins: http://localhost:9891,http://localhost:4200
+      origins: http://localhost:9892,http://localhost:4200
       methods: GET,HEAD,POST,PUT,DELETE,OPTIONS
       # Include Upgrade + Connection for the WebSocket HTTP handshake
       headers: "Authorization,content-type,app-called-service,access-token,refresh-token,Upgrade,Connection"
